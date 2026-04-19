@@ -1,13 +1,13 @@
-# Hindi NER v2 — MuRIL + Rule Post-Correction
+# Indic Hindi NER — MuRIL + Rule Post-Correction
 
 ## Honest performance expectations
 
 | System | Dataset | Entity F1 |
 |--------|---------|-----------|
-| Rule-based only (v1) | Our 20-sentence test | 100% (circular) |
-| Rule-based only (v1) | HiNER test (real) | ~65–72% |
+| Pure Rule-based Baseline | Our 20-sentence test | 100% (circular) |
+| Pure Rule-based Baseline | HiNER test (real) | ~65–72% |
 | MuRIL fine-tuned | HiNER test | ~87–90% |
-| MuRIL + rule post-correction (this) | HiNER test | ~91–94% |
+| Hybrid (MuRIL + rules) | HiNER test | ~91–94% |
 | XLM-RoBERTa-large fine-tuned | HiNER test | ~90–92% |
 | Human agreement on HiNER | HiNER test | ~95% |
 
@@ -15,17 +15,10 @@ The 91–94% range is what you should realistically expect from this system on
 well-formed Hindi news/government text. On social media or dialectal text,
 expect 5–10% lower.
 
-## What changed from v1
+## System Architecture
 
-v1 was pure rule-based: gazetteer + 9 linguistic rules + optional CRF.
-That architecture works well for formal text with honorifics and postpositions,
-but fails on:
-- OOV person names with no honorific and no surname suffix
-- Organisations that are not in the gazetteer
-- Ambiguous tokens where deep context is needed
-- Any text that doesn't follow formal Hindi grammatical structure
+This repository implements a hybrid approach: MuRIL acts as the primary neural system, and linguistic rules serve as a targeted post-correction layer.
 
-v2 uses MuRIL as the primary system and rules only as a correction layer.
 MuRIL was pre-trained on 17 Indian languages including Hindi, giving it
 rich subword representations for Devanagari. Fine-tuning on HiNER's 108,608
 sentences teaches it entity patterns from diverse domains.
@@ -40,7 +33,7 @@ The rule correction layer adds value by:
 ## File structure
 
 ```
-hindi_ner_v2/
+Indic-HI-NER/
 ├── data/
 │   ├── prepare_dataset.py   ← Step 1: download HiNER + tokenise
 │   └── processed/           ← Created by prepare_dataset.py
@@ -62,8 +55,7 @@ hindi_ner_v2/
 ### Prerequisites
 
 ```bash
-pip install torch transformers datasets seqeval accelerate gdown
-# For rule post-correction, also have hindi_ner/ (v1) alongside this folder
+pip install -r requirements.txt
 ```
 
 ### Quick Start: Download pre-trained model
@@ -185,11 +177,11 @@ You can easily try this project and run inference directly in the browser using 
 
 ```python
 # In a Colab notebook:
-!git clone https://github.com/Zrini2005/Collaborator.git # Replace with your URL if different
-%cd Collaborator
+!git clone https://github.com/Zrini2005/Indic-HI-NER.git
+%cd Indic-HI-NER
 
 # Install dependencies including gdown
-!pip install torch transformers datasets seqeval accelerate gdown
+!pip install -r requirements.txt
 
 # Create the models folder and download the pretrained model from drive
 !mkdir -p models/muril-hiner/best
