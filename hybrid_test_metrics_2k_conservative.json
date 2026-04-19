@@ -1,0 +1,68 @@
+{
+  "model_dir": "models/muril-hiner/best",
+  "test_json": "https://huggingface.co/datasets/cfilt/HiNER-original/resolve/main/data/test.json",
+  "sentences_total": 2000,
+  "sentences_evaluated": 2000,
+  "sentences_truncated": 0,
+  "max_length": 256,
+  "batch_size": 128,
+  "hybrid_mode": "conservative",
+  "hybrid_gate_conf": 0.8,
+  "elapsed_seconds": 164.452,
+  "sent_per_sec": 12.162,
+  "token_accuracy": 0.9748704217740549,
+  "entity_precision": 0.910414937759331,
+  "entity_recall": 0.9117647058823529,
+  "entity_f1": 0.906054279749478,
+  "classification_report": {
+    "LOCATION": {
+      "precision": 0.9609769046986992,
+      "recall": 0.9581789306511381,
+      "f1-score": 0.9595758780649437,
+      "support": 3778
+    },
+    "ORGANIZATION": {
+      "precision": 0.7828371278458844,
+      "recall": 0.8799212598425197,
+      "f1-score": 0.8285449490268767,
+      "support": 508
+    },
+    "OTHER": {
+      "precision": 0.7560627674750356,
+      "recall": 0.7636887608069164,
+      "f1-score": 0.7598566308243727,
+      "support": 694
+    },
+    "PERSON": {
+      "precision": 0.8520710059171598,
+      "recall": 0.8584202682563339,
+      "f1-score": 0.8552338530066815,
+      "support": 671
+    },
+    "TIME": {
+      "precision": 0.8129032258064516,
+      "recall": 0.842809364548495,
+      "f1-score": 0.8275862068965517,
+      "support": 299
+    },
+    "micro avg": {
+      "precision": 0.9004149377593361,
+      "recall": 0.9117647058823529,
+      "f1-score": 0.906054279749478,
+      "support": 5950
+    },
+    "macro avg": {
+      "precision": 0.8329702063486462,
+      "recall": 0.8606037168210806,
+      "f1-score": 0.8461595035638853,
+      "support": 5950
+    },
+    "weighted avg": {
+      "precision": 0.9021440801700188,
+      "recall": 0.9117647058823529,
+      "f1-score": 0.9066939822616266,
+      "support": 5950
+    }
+  },
+  "classification_report_text": "              precision    recall  f1-score   support\n\n    LOCATION     0.9610    0.9582    0.9596      3778\nORGANIZATION     0.7828    0.8799    0.8285       508\n       OTHER     0.7561    0.7637    0.7599       694\n      PERSON     0.8521    0.8584    0.8552       671\n        TIME     0.8129    0.8428    0.8276       299\n\n   micro avg     0.9004    0.9118    0.9061      5950\n   macro avg     0.8330    0.8606    0.8462      5950\nweighted avg     0.9021    0.9118    0.9067      5950\n"
+}

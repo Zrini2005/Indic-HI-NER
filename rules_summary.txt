@@ -1,0 +1,84 @@
+1. Person (PERSON) Rules
+These rules focus on honorifics, roles, and grammatical markers that uniquely identify human entities.
+
+P01–P108 (Honorific Prefixes): Recognizes formal (श्री), academic (डॉ, प्रोफेसर), judicial (जस्टिस), military (कर्नल, मेजर), and religious (पंडित, मौलाना) titles.
+
+P109–P160 (Name Particles): Common Devanagari name components like कुमार, देवी, दास, and खान.
+
+P161–P184 (Respectful Suffixes): Social markers like जी, साहब, and दीदी.
+
+P185–P247 (Occupations): Triggers for professional roles such as अभिनेता (actor), पत्रकार (journalist), and वैज्ञानिक (scientist).
+
+P248–P291 (Caste/Community Surnames): Regional and community markers (शर्मा, यादव, रेड्डी, मुखर्जी).
+
+Structural Rules (P_S01–P_S22):
+
+Ergative "ने" (P_S08): High-confidence trigger for animate agents.
+
+Dative "को" (P_S20): Identifies human targets for specific verbs (e.g., "told X", "woke up X").
+
+Speech Verbs (P_S15): Identifies the speaker preceding verbs like कहा or बताया.
+
+2. Location (LOCATION) Rules
+These rules utilize morphological suffixes and geographic keywords to anchor place names.
+
+L01–L62 (Morphological Suffixes): Compounded suffixes like -नगर, -पुर, -गढ़, and -आबाद.
+
+L63–L154 (Geographic Keywords): Administrative units (जिला, राज्य) and settlement types (शहर, गाँव).
+
+L155–L190 (Standalone Features): Natural features like नदी (river), झील (lake), and घाटी (valley).
+
+L219–L236 (Transport Hubs): Station, Airport, and Port anchors.
+
+Structural Rules (L_S01–L_S17):
+
+Directional (L_S06): Cardinal directions + nouns (e.g., "North India").
+
+Motion Verbs (L_S09): Entities preceding "से [motion verb]" (e.g., "came from X").
+
+Proximity (L_S12): Places followed by के पास or निकट.
+
+3. Organization (ORGANIZATION) Rules
+Targets institutional, corporate, and governmental bodies through keyword anchors and legal suffixes.
+
+O01–O118 (Institutional Anchors): Keywords for education (विश्वविद्यालय), government (मंत्रालय, आयोग), finance (बैंक), and media (चैनल).
+
+O119–O156 (Latin Abbreviations): Global and local acronyms like IIT, ISRO, WHO, and CBI.
+
+O157–O183 (Corporate Suffixes): Legal forms like लिमिटेड (Ltd), प्राइवेट लिमिटेड, and एजेंसी.
+
+Structural Rules (O_S01–O_S11):
+
+Keyword Spans (O_S01): Sweeps preceding tokens into the ORG entity when an anchor is found.
+
+Government Bodies (O_S05, O_S10): Specific patterns for High Court, Supreme Court, and "X Government".
+
+4. Time (TIME) Rules
+Handles Gregorian, Hindu (Vikram Samvat), and relative time expressions.
+
+T01–T38 (Time of Day): सुबह, दोपहर, रात, etc.
+
+Months & Days (T39–T82): Full Gregorian and Vikram Samvat month names and day names (सोमवार).
+
+T83–T122 (Relative Time): आज, कल, हाल ही में, अगले हफ्ते.
+
+T123–T148 (Historical Eras): सदी, दशक, मुगल काल, ईसा पूर्व.
+
+Structural Rules (T_S01–T_S20):
+
+Clock Time (T_S08–T_S10): HH:MM patterns and "X बजकर Y मिनट".
+
+Year Anchors (T_S13–T_S14): सन् or वर्ष followed by digits.
+
+5. Accuracy Boosters (N_R01–N_R120)
+New rules added to resolve common misclassifications (e.g., PERSON bleed into LOCATION).
+
+Disambiguation: Distinguishes between River vs. Deity (N_R91) and Corporate Brand vs. Place (N_R95: Tata Nagar).
+
+Entity Extensions: Absorbs trailing city names into institutional spans (N_R73: "University of [City]").
+
+Sports Teams (N_R107): Identifies IPL teams like "Mumbai Indians" as ORG.
+
+Epithets (N_R120): Recognizes titles like नेताजी or बाबा साहब as part of a PER span.
+
+Guards: Explicitly prevents grammatical markers like "ने" (N_R86) or occupational roles like "छात्र" (N_R90) from being tagged as entities.

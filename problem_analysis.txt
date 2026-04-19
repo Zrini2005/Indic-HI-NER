@@ -1,0 +1,29 @@
+1. Sentences where only the Neural Model (NER) succeeds
+Neural models excel at using contextual clues to identify entities they have never seen before or that don't follow a specific pattern.
+
+Sentence: "हाल ही में अइरावत ने अपनी नई रिपोर्ट जारी की।"
+
+Why Rule-Based Fails: "अइरावत" (Airavat) could be a person, a project, or a mythical elephant. Without a predefined list (Gazetteer) containing this specific name, a rule-based system has no pattern to follow.
+
+Why NER Succeeds: The model recognizes the surrounding context—"हाल ही में" (Recently) and "ने अपनी नई रिपोर्ट जारी की" (released its new report)—and infers that the subject must be an Organization or Person based on its role in the sentence.
+
+Sentence: "कल आकाश बहुत खुश था।" vs "कल आकाश में बादल थे।"
+
+Why Rule-Based Fails: A rule-based system might tag "आकाश" (Akash) as a Person in both sentences because it's a common name.
+
+Why NER Succeeds: The neural model understands that in the first sentence, "खुश था" (was happy) refers to a person, whereas in the second, "में बादल थे" (had clouds) refers to the sky (not an entity).
+
+2. Sentences where only Rule-Based systems succeed
+Rule-based systems excel at structural precision, especially for entities with strict formats like IDs, dates, or specific honorifics that models might overlook.
+
+Sentence: "मेरा पंजीकरण नंबर TN-15-BT-2024 है।"
+
+Why NER Fails: Neural models often struggle with alphanumeric strings they haven't seen in training. They might split the token incorrectly or fail to recognize the sequence as a single entity.
+
+Why Rule-Based Succeeds: A simple Regular Expression (Regex) like [A-Z]{2}-\d{2}-[A-Z]{2}-\d{4} will catch this with 100% accuracy every time.
+
+Sentence: "प्रिंसिपल के. एल. राहुल स्कूल आए थे।"
+
+Why NER Fails: As seen in your test_predictions.csv files, models often struggle with initials and periods. A model might tag "राहुल" but miss "के. एल." or get confused by the punctuation.
+
+Why Rule-Based Succeeds: A rule can be written to say: "If a word is preceded by an honorific (डॉ, श्री, प्रिंसिपल) and followed by capital letters or specific initials, tag the whole string as a Person."

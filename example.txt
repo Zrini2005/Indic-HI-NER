@@ -1,0 +1,163 @@
+Dummy Sentence
+श्री नरेंद्र मोदी नई दिल्ली में बोले
+
+Tokens (index):
+
+श्री
+नरेंद्र
+मोदी
+नई
+दिल्ली
+में
+बोले
+Step 1: Neural model output (from inference_updated.py:213)
+
+Assume MuRIL predicts:
+
+श्री -> B-PERSON (0.70)
+नरेंद्र -> I-PERSON (0.91)
+मोदी -> I-PERSON (0.88)
+नई -> B-LOCATION (0.62)
+दिल्ली -> I-LOCATION (0.93)
+में -> I-LOCATION (0.66) ← common boundary mistake
+बोले -> O (0.95)
+So neural alone says: PERSON span is fine, LOCATION incorrectly includes में.
+
+Step 2: Rule engine matches (from rules_layerv2.py:914)
+
+Assume rules fire these dummy matches:
+
+P_S01 honorific rule on श्री -> span [1..3], PERSON, conf=0.90, evidence=prefix, priority=2
+L_S18 city gazetteer on दिल्ली -> span [5..5], LOCATION, conf=0.95, evidence=gazetteer, priority=3
+Postposition structural signal on में -> marks that token as postposition-like (weak evidence, or later hard-trim)
+These are returned as RuleMatch objects; no final decision yet.
+
+Step 3: ConfidenceVoter combines evidence (from rules_layerv2.py:77)
+
+For each token:
+
+Start with neural score for neural tag.
+Add all rule scores for labels covering that token.
+Highest total score wins.
+Core math used by voter:
+
+log_odds
+(
+p
+)
+=
+log
+⁡
+(
+p
+1
+−
+p
+)
+log_odds(p)=log( 
+1−p
+p
+​
+ )
+Rule contribution for one match:
+
+rule_score
+=
+log_odds
+(
+p
+rule
+)
+×
+w
+source
+×
+w
+priority
+rule_score=log_odds(p 
+rule
+​
+ )×w 
+source
+​
+ ×w 
+priority
+​
+ 
+Source weights from rules_layerv2.py:60, priority weights from rules_layerv2.py:65.
+
+Mini numeric demo on token 5: दिल्ली
+Neural says I-LOCATION, 
+p
+=
+0.93
+p=0.93:
+
+log
+⁡
+(
+0.93
+0.07
+)
+≈
+2.586
+log( 
+0.07
+0.93
+​
+ )≈2.586
+Rule says B-LOCATION, 
+p
+=
+0.95
+p=0.95, source=gazetteer (1.50), priority=3 (1.70):
+
+log
+⁡
+(
+0.95
+0.05
+)
+×
+1.50
+×
+1.70
+≈
+2.944
+×
+2.55
+≈
+7.507
+log( 
+0.05
+0.95
+​
+ )×1.50×1.70≈2.944×2.55≈7.507
+So LOCATION label strongly wins overall.
+
+Mini numeric demo on token 6: में
+Neural says I-LOCATION with 0.66 (weak-moderate).
+Even if voter temporarily keeps entity-like score, next step hard-trims postpositions.
+
+Step 4: Hard postposition trim (from inference_updated.py:294)
+
+Token में is in postposition set, so forced to O with confidence 1.0.
+This is a deterministic cleanup after voting.
+
+Step 5: Optional legacy gazetteer override (from inference_updated.py:252)
+
+If active, exact tier-1 gazetteer can overwrite low-confidence or O tags as final fallback.
+
+Final dummy output
+
+श्री -> B-PERSON
+नरेंद्र -> I-PERSON
+मोदी -> I-PERSON
+नई -> B-LOCATION
+दिल्ली -> I-LOCATION
+में -> O
+बोले -> O
+Entities:
+
+श्री नरेंद्र मोदी -> PERSON
+नई दिल्ली -> LOCATION

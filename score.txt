@@ -1,0 +1,22 @@
+PS D:\srinida> .\venv\Scripts\python.exe evaluate.py --model_dir models\muril-hiner/best
+Loading model from models\muril-hiner/best...
+Loading weights: 100%|███████████████████████████| 199/199 [00:00<00:00, 10179.36it/s]
+  Loaded 21657 examples from data/processed/test.jsonl
+
+=================================================================
+EVALUATION RESULTS — HiNER Test Set
+=================================================================
+              precision    recall  f1-score   support
+
+    LOCATION     0.9636    0.9534    0.9584     40072
+ORGANIZATION     0.7878    0.8643    0.8243      5351
+       OTHER     0.7504    0.7722    0.7612      7710
+      PERSON     0.8610    0.8859    0.8733      7495
+        TIME     0.8384    0.8401    0.8392      3645
+
+   micro avg     0.9023    0.9099    0.9061     64273
+   macro avg     0.8402    0.8632    0.8513     64273
+weighted avg     0.9043    0.9099    0.9069     64273
+
+Overall entity-level F1: 0.9061 (90.61%)
+PS D:\srinida>

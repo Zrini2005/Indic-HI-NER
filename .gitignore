@@ -1,0 +1,27 @@
+# Environments
+venv/
+env/
+.env
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Models and checkpoints
+models/
+*.safetensors
+*.bin
+
+# Built distributions / Data
+data/processed/
+ 
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Desktop.ini
